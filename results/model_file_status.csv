@@ -1,0 +1,11 @@
+model_name,model_id,file_exists,rows,completed_pairs,expected_pairs,complete
+Qwen3-0.6B,Qwen/Qwen3-0.6B,True,4213,4130,4136,False
+Qwen3-1.7B,Qwen/Qwen3-1.7B,True,4256,4116,4136,False
+Qwen3-4B-Instruct-2507,Qwen/Qwen3-4B-Instruct-2507,True,4184,4128,4136,False
+Gemma-4-E2B-it,google/gemma-4-E2B-it,True,4183,4127,4136,False
+Gemma-4-E4B-it,google/gemma-4-E4B-it,True,4160,4128,4136,False
+Llama-3.2-1B-Instruct,meta-llama/Llama-3.2-1B-Instruct,True,4158,4130,4136,False
+Llama-3.2-3B-Instruct,meta-llama/Llama-3.2-3B-Instruct,True,4160,4128,4136,False
+Granite-3.3-2B-Instruct,ibm-granite/granite-3.3-2b-instruct,True,4144,4132,4136,False
+SmolLM3-3B,HuggingFaceTB/SmolLM3-3B,True,4142,4132,4136,False
+Phi-4-mini-instruct,microsoft/Phi-4-mini-instruct,True,4135,4129,4136,False
