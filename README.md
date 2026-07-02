@@ -11,8 +11,6 @@ The project evaluates compact instruction-tuned language models for local natura
 
 ## Repository layout
 
-Use this layout in GitHub:
-
 ```text
 local-text-to-sql-sqlite-slm-benchmark/
 ├── README.md
