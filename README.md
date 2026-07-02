@@ -1,6 +1,6 @@
 # A Benchmark of Small Language Models for Local Text-to-SQL over SQLite
 
-This repository contains the notebooks, generated benchmark outputs, and figures for the paper:
+This repository contains the notebooks and figures for the paper:
 
 **A Benchmark of Small Language Models for Local Text-to-SQL over SQLite**  
 **Author:** Ha Viet Thang, FPT University, Can Tho, Vietnam
