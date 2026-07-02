@@ -119,6 +119,19 @@ Condition D differs from Condition C only by allowing one verification-triggered
 
 ---
 
+## Released Dataset
+
+The generated benchmark outputs are released on Kaggle:
+
+**Local Text-to-SQL over SQLite with Small Language Models**  
+https://www.kaggle.com/datasets/michaelhafpt/local-text-to-sql-over-sqlite-with-slms
+
+This Kaggle artifact contains generated model outputs and benchmark logs for the local Text-to-SQL experiments. It includes per-model JSONL outputs and a combined Parquet output file for analysis.
+
+Some files include Spider-derived fields such as natural-language questions, gold SQL, database identifiers, and schema-context information. Because of this, users should also cite the original Spider 1.0 paper when using the dataset.
+
+---
+
 ## Figures
 
 ### Local NL-to-SQL execution pipeline
@@ -322,9 +335,24 @@ data/spider/database/
 
 ---
 
-## Data and code availability statement
+## Spider 1.0 Citation
 
-The benchmark notebooks, generated aggregate metric files, generated figure files, and paper-support artifacts are available in this repository. The experiments use the publicly available Spider 1.0 dataset and its original SQLite database files, which are not redistributed as database files in this repository. Users should obtain Spider 1.0 from its official release and place the files according to the layout above. Model weights are not redistributed; the repository documents the exact model identifiers used in the experiments.
+This benchmark is based on the Spider 1.0 development set. Spider is a large-scale cross-domain semantic parsing and Text-to-SQL dataset with 10,181 questions, 5,693 unique SQL queries, and 200 databases across 138 domains. The official Spider page describes Spider as a complex and cross-domain benchmark for natural-language interfaces to relational databases.
+
+If you use this repository or the released Kaggle dataset, please cite the original Spider paper:
+
+```bibtex
+@inproceedings{yu-etal-2018-spider,
+  title     = {{S}pider: A Large-Scale Human-Labeled Dataset for Complex and Cross-Domain Semantic Parsing and Text-to-{SQL} Task},
+  author    = {Yu, Tao and Zhang, Rui and Yang, Kai and Yasunaga, Michihiro and Wang, Dongxu and Li, Zifan and Ma, James and Li, Irene and Yao, Qingning and Roman, Shanelle and Zhang, Zilin and Radev, Dragomir},
+  booktitle = {Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing},
+  year      = {2018},
+  address   = {Brussels, Belgium},
+  publisher = {Association for Computational Linguistics},
+  pages     = {3911--3921},
+  doi       = {10.18653/v1/D18-1425},
+  url       = {https://aclanthology.org/D18-1425/}
+}
 
 ---
 
