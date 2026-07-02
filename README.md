@@ -43,33 +43,6 @@ No `requirements.txt` file is currently included in the uploaded artifact. The n
 
 ---
 
-## Uploaded artifact inventory
-
-| Path | What it contains |
-| --- | --- |
-| notebooks/APWEB_WAIM_2026_Text_to_SQL_SLMs.ipynb | Main benchmark notebook: environment setup, model loading, Spider loading, schema-context generation, prompt generation, 4-bit local inference, verification, SQLite execution, metrics, and exports. |
-| notebooks/APWEB_WAIM_2026_Benchmark_Design_Materials_Generator.ipynb | Material-generation notebook for prompt/schema examples, prompt/context statistics, diagrams, tables, and paper-ready support artifacts. |
-| figures/fig_benchmark_pipeline.png | Local NL-to-SQL execution pipeline diagram. |
-| figures/fig_prompt_length_by_condition.png | Prompt-length distribution by schema-context condition. |
-| figures/fig_execution_accuracy_by_condition.png | Grouped bar chart of execution accuracy by model and condition. |
-| figures/fig_top5_accuracy_by_condition.png | Line chart showing accuracy movement for the top five Condition-D models. |
-| figures/fig_pareto_accuracy_latency.png | Condition-D accuracy-latency scatter plot with Pareto frontier. |
-| figures/fig_pareto_accuracy_memory.png | Condition-D accuracy-memory scatter plot with Pareto frontier. |
-| figures/fig_repair_accuracy_gain.png | Horizontal bar chart of repair gain from Condition C to Condition D. |
-| results/all_models_main_metrics.csv | Main aggregate metrics for 10 models × 4 conditions; 40 rows and 20 columns. |
-| results/all_models_analytic_subset_metrics.csv | Aggregate metrics on the analytical subset; 40 rows and 20 columns. |
-| results/all_models_error_breakdown.csv | Verification-status counts and rates; 218 rows and 6 columns. |
-| results/resource_aware_rank.csv | Resource-aware score/ranking table with normalized accuracy, executability, latency, and memory components; 40 rows and 26 columns. |
-| results/rank_by_execution_accuracy.csv | Ranking table sorted by execution accuracy. |
-| results/rank_by_executable_query_rate.csv | Ranking table sorted by executable-query rate. |
-| results/rank_by_median_generation_latency.csv | Ranking table sorted by median generation latency. |
-| results/rank_by_model_load_memory.csv | Ranking table sorted by model-load GPU reserved-memory delta. |
-| results/model_file_status.csv | Model-output file completion/status table for the 10 model runs; 10 rows. |
-| results/all_model_outputs.csv | Large per-example/per-run output table; 41,735 CSV records, 48 columns, and 41,359 unique example-model-condition keys. |
-| results/spider_dev_analytic_subset.csv | Analytical-subset helper file with 877 Spider development examples selected by SQL structure. |
-
----
-
 ## Data setup for reproduction
 
 The experiments use the **Spider 1.0 development set** and the original Spider SQLite database files. These files should be downloaded separately from the official Spider release and placed locally in this layout:
