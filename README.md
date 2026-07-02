@@ -7,8 +7,6 @@ Ha Viet Thang, FPT University, Can Tho, Vietnam
 
 The paper evaluates compact instruction-tuned language models for local natural-language-to-SQL generation over embedded SQLite databases. The benchmark uses the Spider 1.0 development set, direct SQLite execution, 4-bit NF4 quantization, lightweight SQL verification, and four schema-context/repair conditions.
 
-> **Important:** This repository does **not** redistribute the Spider 1.0 dataset, Spider question text, gold SQL, or original SQLite database files. Users should download Spider 1.0 from its official source and place it locally following the layout below.
-
 ---
 
 ## Repository contents
