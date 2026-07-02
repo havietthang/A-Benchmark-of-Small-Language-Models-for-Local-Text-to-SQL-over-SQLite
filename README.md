@@ -326,8 +326,6 @@ data/spider/database/
 
 The benchmark notebooks, generated aggregate metric files, generated figure files, and paper-support artifacts are available in this repository. The experiments use the publicly available Spider 1.0 dataset and its original SQLite database files, which are not redistributed as database files in this repository. Users should obtain Spider 1.0 from its official release and place the files according to the layout above. Model weights are not redistributed; the repository documents the exact model identifiers used in the experiments.
 
-For a strict generated-data-only public release, the recommended files to keep public are the aggregate result files, ranking files, figures, and notebooks. Redact or remove per-example files that include Spider question text or gold SQL unless redistribution rights are confirmed.
-
 ---
 
 ## License
