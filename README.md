@@ -7,17 +7,6 @@ This repository contains the notebooks, generated benchmark outputs, and figures
 
 The project evaluates compact instruction-tuned language models for local natural-language-to-SQL generation over embedded SQLite databases. The benchmark uses the Spider 1.0 development set, direct SQLite execution, 4-bit NF4 quantization, lightweight SQL verification, and four schema-context/repair conditions.
 
-## Public-release warning
-
-Most files in this repository are generated benchmark artifacts. However, two uploaded CSV files contain Spider-derived text fields:
-
-- `results/all_model_outputs.csv` includes columns such as `question`, `gold_sql`, `schema_context`, `generated_sql`, and `final_sql`.
-- `results/spider_dev_analytic_subset.csv` includes `question` and `gold_sql`.
-
-If this repository is made public as a **generated-data-only artifact**, confirm that redistribution of these Spider-derived fields is allowed, or replace those files with redacted versions before release. A safer public version would remove at least `question`, `gold_sql`, and possibly full raw `schema_context` fields while keeping aggregate metrics and model-output identifiers.
-
-The repository does **not** need to include the original Spider SQLite database files or model weights.
-
 ---
 
 ## Repository layout
