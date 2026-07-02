@@ -331,14 +331,7 @@ For a strict generated-data-only public release, the recommended files to keep p
 ---
 
 ## License
-
-The code license should be specified in `LICENSE` if a license file is added later.
-
-A common setup is:
-
-- code/notebooks: MIT License or Apache-2.0;
-- generated aggregate result tables and figures: CC BY 4.0;
-- third-party datasets and model weights: governed by their original licenses/terms.
+MIT License 
 
 ---
 
@@ -350,7 +343,7 @@ If you use this benchmark code or generated results, please cite:
 @inproceedings{ha2026localtexttosql,
   title     = {A Benchmark of Small Language Models for Local Text-to-SQL over SQLite},
   author    = {Ha Viet Thang},
-  booktitle = {Proceedings of APWeb-WAIM 2026 Workshops},
+  booktitle = {To appear},
   year      = {2026},
   note      = {To appear}
 }
