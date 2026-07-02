@@ -12,7 +12,7 @@ The project evaluates compact instruction-tuned language models for local natura
 ## Repository layout
 
 ```text
-local-text-to-sql-sqlite-slm-benchmark/
+A-Benchmark-of-Small-Language-Models-for-Local-Text-to-SQL-over-SQLite/
 ├── README.md
 ├── notebooks/
 │   ├── APWEB_WAIM_2026_Text_to_SQL_SLMs.ipynb
