@@ -322,20 +322,6 @@ data/spider/database/
 
 ---
 
-## Security notes
-
-Before committing notebooks publicly, check that they do not contain:
-
-- Hugging Face tokens;
-- API keys;
-- Kaggle credentials;
-- private Google Drive paths;
-- temporary local paths that reveal private information.
-
-Use environment variables or Colab Secrets instead of hard-coded credentials. The uploaded main notebook references `HF_TOKEN`, but no literal `hf_...` token string was detected in the inspected notebook.
-
----
-
 ## Data and code availability statement
 
 The benchmark notebooks, generated aggregate metric files, generated figure files, and paper-support artifacts are available in this repository. The experiments use the publicly available Spider 1.0 dataset and its original SQLite database files, which are not redistributed as database files in this repository. Users should obtain Spider 1.0 from its official release and place the files according to the layout above. Model weights are not redistributed; the repository documents the exact model identifiers used in the experiments.
