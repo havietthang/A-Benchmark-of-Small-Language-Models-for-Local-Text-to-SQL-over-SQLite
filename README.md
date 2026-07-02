@@ -353,12 +353,7 @@ If you use this repository or the released Kaggle dataset, please cite the origi
   doi       = {10.18653/v1/D18-1425},
   url       = {https://aclanthology.org/D18-1425/}
 }
-
----
-
-## License
-MIT License 
-
+```
 ---
 
 ## Citation
