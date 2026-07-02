@@ -1,52 +1,91 @@
 # A Benchmark of Small Language Models for Local Text-to-SQL over SQLite
 
-This repository contains the code, notebook, generated results, and figure/table artifacts for the paper:
+This repository contains the notebooks, generated benchmark outputs, and figures for the paper:
 
 **A Benchmark of Small Language Models for Local Text-to-SQL over SQLite**  
-Ha Viet Thang, FPT University, Can Tho, Vietnam
+**Author:** Ha Viet Thang, FPT University, Can Tho, Vietnam
 
-The paper evaluates compact instruction-tuned language models for local natural-language-to-SQL generation over embedded SQLite databases. The benchmark uses the Spider 1.0 development set, direct SQLite execution, 4-bit NF4 quantization, lightweight SQL verification, and four schema-context/repair conditions.
+The project evaluates compact instruction-tuned language models for local natural-language-to-SQL generation over embedded SQLite databases. The benchmark uses the Spider 1.0 development set, direct SQLite execution, 4-bit NF4 quantization, lightweight SQL verification, and four schema-context/repair conditions.
+
+## Public-release warning
+
+Most files in this repository are generated benchmark artifacts. However, two uploaded CSV files contain Spider-derived text fields:
+
+- `results/all_model_outputs.csv` includes columns such as `question`, `gold_sql`, `schema_context`, `generated_sql`, and `final_sql`.
+- `results/spider_dev_analytic_subset.csv` includes `question` and `gold_sql`.
+
+If this repository is made public as a **generated-data-only artifact**, confirm that redistribution of these Spider-derived fields is allowed, or replace those files with redacted versions before release. A safer public version would remove at least `question`, `gold_sql`, and possibly full raw `schema_context` fields while keeping aggregate metrics and model-output identifiers.
+
+The repository does **not** need to include the original Spider SQLite database files or model weights.
 
 ---
 
-## Repository contents
+## Repository layout
+
+Use this layout in GitHub:
 
 ```text
 local-text-to-sql-sqlite-slm-benchmark/
 ├── README.md
-├── requirements.txt
 ├── notebooks/
-│   └── APWEB_WAIM_2026_Text_to_SQL_SLMs.ipynb
-├── data/
-│   └── README.md
-├── results/
-│   ├── all_models_main_metrics.csv
-│   ├── all_models_error_breakdown.csv
-│   ├── all_models_analytic_subset_metrics.csv
-│   ├── resource_aware_rank.csv
-│   ├── rank_by_execution_accuracy.csv
-│   ├── rank_by_executable_query_rate.csv
-│   ├── rank_by_median_generation_latency.csv
-│   ├── rank_by_model_load_memory.csv
-│   └── model_file_status.csv
-└── figures/
-    ├── fig1_pipeline.png
-    ├── fig3_execution_accuracy_by_condition.png
-    ├── fig4_top5_accuracy_movement.png
-    ├── fig5_accuracy_latency_tradeoff.png
-    ├── fig6_accuracy_memory_tradeoff.png
-    └── fig7_repair_gain.png
+│   ├── APWEB_WAIM_2026_Text_to_SQL_SLMs.ipynb
+│   └── APWEB_WAIM_2026_Benchmark_Design_Materials_Generator.ipynb
+├── figures/
+│   ├── fig_benchmark_pipeline.png
+│   ├── fig_prompt_length_by_condition.png
+│   ├── fig_execution_accuracy_by_condition.png
+│   ├── fig_top5_accuracy_by_condition.png
+│   ├── fig_pareto_accuracy_latency.png
+│   ├── fig_pareto_accuracy_memory.png
+│   └── fig_repair_accuracy_gain.png
+└── results/
+    ├── all_models_main_metrics.csv
+    ├── all_models_analytic_subset_metrics.csv
+    ├── all_models_error_breakdown.csv
+    ├── resource_aware_rank.csv
+    ├── rank_by_execution_accuracy.csv
+    ├── rank_by_executable_query_rate.csv
+    ├── rank_by_median_generation_latency.csv
+    ├── rank_by_model_load_memory.csv
+    ├── model_file_status.csv
+    ├── all_model_outputs.csv
+    └── spider_dev_analytic_subset.csv
 ```
 
-If your local filenames differ, update the figure paths in this README accordingly.
+No `requirements.txt` file is currently included in the uploaded artifact. The notebooks contain the setup cells used for the Colab experiments.
 
 ---
 
-## Data setup
+## Uploaded artifact inventory
 
-This benchmark uses the **Spider 1.0 development set** and the original Spider SQLite database files.
+| Path | What it contains |
+| --- | --- |
+| notebooks/APWEB_WAIM_2026_Text_to_SQL_SLMs.ipynb | Main benchmark notebook: environment setup, model loading, Spider loading, schema-context generation, prompt generation, 4-bit local inference, verification, SQLite execution, metrics, and exports. |
+| notebooks/APWEB_WAIM_2026_Benchmark_Design_Materials_Generator.ipynb | Material-generation notebook for prompt/schema examples, prompt/context statistics, diagrams, tables, and paper-ready support artifacts. |
+| figures/fig_benchmark_pipeline.png | Local NL-to-SQL execution pipeline diagram. |
+| figures/fig_prompt_length_by_condition.png | Prompt-length distribution by schema-context condition. |
+| figures/fig_execution_accuracy_by_condition.png | Grouped bar chart of execution accuracy by model and condition. |
+| figures/fig_top5_accuracy_by_condition.png | Line chart showing accuracy movement for the top five Condition-D models. |
+| figures/fig_pareto_accuracy_latency.png | Condition-D accuracy-latency scatter plot with Pareto frontier. |
+| figures/fig_pareto_accuracy_memory.png | Condition-D accuracy-memory scatter plot with Pareto frontier. |
+| figures/fig_repair_accuracy_gain.png | Horizontal bar chart of repair gain from Condition C to Condition D. |
+| results/all_models_main_metrics.csv | Main aggregate metrics for 10 models × 4 conditions; 40 rows and 20 columns. |
+| results/all_models_analytic_subset_metrics.csv | Aggregate metrics on the analytical subset; 40 rows and 20 columns. |
+| results/all_models_error_breakdown.csv | Verification-status counts and rates; 218 rows and 6 columns. |
+| results/resource_aware_rank.csv | Resource-aware score/ranking table with normalized accuracy, executability, latency, and memory components; 40 rows and 26 columns. |
+| results/rank_by_execution_accuracy.csv | Ranking table sorted by execution accuracy. |
+| results/rank_by_executable_query_rate.csv | Ranking table sorted by executable-query rate. |
+| results/rank_by_median_generation_latency.csv | Ranking table sorted by median generation latency. |
+| results/rank_by_model_load_memory.csv | Ranking table sorted by model-load GPU reserved-memory delta. |
+| results/model_file_status.csv | Model-output file completion/status table for the 10 model runs; 10 rows. |
+| results/all_model_outputs.csv | Large per-example/per-run output table; 41,735 CSV records, 48 columns, and 41,359 unique example-model-condition keys. |
+| results/spider_dev_analytic_subset.csv | Analytical-subset helper file with 877 Spider development examples selected by SQL structure. |
 
-The expected local layout is:
+---
+
+## Data setup for reproduction
+
+The experiments use the **Spider 1.0 development set** and the original Spider SQLite database files. These files should be downloaded separately from the official Spider release and placed locally in this layout:
 
 ```text
 data/spider/
@@ -55,57 +94,55 @@ data/spider/
 └── database/
 ```
 
-The repository does not include these Spider files. To reproduce the experiments, download Spider 1.0 from the official release and place the files in the layout above.
-
-Generated benchmark outputs are stored in `results/`. These are generated artifacts from the benchmark run, not a redistribution of the original Spider dataset.
+The notebooks expect access to Spider development examples, Spider schema metadata, and the original SQLite database files. The repository should not redistribute the SQLite databases unless redistribution rights are explicitly confirmed.
 
 ---
 
-## Code and notebook
+## Notebooks
 
-The main benchmark notebook is:
+### `notebooks/APWEB_WAIM_2026_Text_to_SQL_SLMs.ipynb`
 
-```text
-notebooks/APWEB_WAIM_2026_Text_to_SQL_SLMs.ipynb
-```
+Main benchmark notebook. It contains the end-to-end experimental pipeline:
 
-The notebook covers:
+1. environment setup;
+2. model list and benchmark configuration;
+3. Hugging Face login through an `HF_TOKEN` environment variable or Colab secret;
+4. 4-bit NF4 model loading;
+5. Spider development-set loading;
+6. full, pruned, and augmented schema-context construction;
+7. prompt construction;
+8. local model inference;
+9. SQL extraction;
+10. lightweight SQL verification;
+11. SQLite execution;
+12. execution-accuracy and executable-rate computation;
+13. latency and memory logging;
+14. repair-pass evaluation;
+15. analytical-subset evaluation;
+16. CSV/figure/table export.
 
-- Spider development-set loading
-- schema-context construction
-- full, pruned, and augmented schema conditions
-- prompt construction
-- local model inference
-- SQL extraction
-- lightweight SQL verification
-- SQLite execution
-- execution-accuracy computation
-- executable-query-rate computation
-- latency and GPU-memory logging
-- repair-pass evaluation
-- analytical-subset evaluation
-- result-table generation
+### `notebooks/APWEB_WAIM_2026_Benchmark_Design_Materials_Generator.ipynb`
+
+Support notebook for paper materials. It does **not** run full model inference. It generates benchmark-design material such as prompt listings, schema-context examples, prompt/context-length summaries, verification/repair diagrams, example tables, and paper-ready LaTeX snippets.
 
 ---
 
 ## Models evaluated
 
-The benchmark evaluates ten compact instruction-tuned models across six model families.
+| Model name | Model ID | Completed pairs |
+| --- | --- | ---: |
+| Qwen3-0.6B | Qwen/Qwen3-0.6B | 4130 / 4136 |
+| Qwen3-1.7B | Qwen/Qwen3-1.7B | 4116 / 4136 |
+| Qwen3-4B-Instruct-2507 | Qwen/Qwen3-4B-Instruct-2507 | 4128 / 4136 |
+| Gemma-4-E2B-it | google/gemma-4-E2B-it | 4127 / 4136 |
+| Gemma-4-E4B-it | google/gemma-4-E4B-it | 4128 / 4136 |
+| Llama-3.2-1B-Instruct | meta-llama/Llama-3.2-1B-Instruct | 4130 / 4136 |
+| Llama-3.2-3B-Instruct | meta-llama/Llama-3.2-3B-Instruct | 4128 / 4136 |
+| Granite-3.3-2B-Instruct | ibm-granite/granite-3.3-2b-instruct | 4132 / 4136 |
+| SmolLM3-3B | HuggingFaceTB/SmolLM3-3B | 4132 / 4136 |
+| Phi-4-mini-instruct | microsoft/Phi-4-mini-instruct | 4129 / 4136 |
 
-| Model | Family / source | Notes |
-|---|---|---|
-| `Qwen3-0.6B` | Qwen | Compact baseline |
-| `Qwen3-1.7B` | Qwen | Small Qwen model |
-| `Qwen3-4B-Instruct-2507` | Qwen | Best overall resource-aware tradeoff in this benchmark |
-| `Gemma-4-E2B-it` | Gemma | Strong accuracy with moderate resource cost |
-| `Gemma-4-E4B-it` | Gemma | Highest raw execution accuracy in this benchmark |
-| `Llama-3.2-1B-Instruct` | Llama | Small Llama baseline |
-| `Llama-3.2-3B-Instruct` | Llama | Stronger Llama baseline |
-| `Granite-3.3-2B-Instruct` | Granite | Compact IBM Granite model |
-| `SmolLM3-3B` | SmolLM | Compact open model |
-| `Phi-4-mini-instruct` | Phi | Microsoft Phi mini model |
-
-Model weights are **not** redistributed in this repository. The notebook lists the model identifiers and loads them from their original hosting locations.
+Model weights are not redistributed. The notebooks load the models from their original model repositories.
 
 ---
 
@@ -118,163 +155,204 @@ Model weights are **not** redistributed in this repository. The notebook lists t
 | C | Conservative pruned + augmented schema | Disabled |
 | D | Conservative pruned + augmented schema | Enabled |
 
-Condition D differs from Condition C only by allowing one verification-triggered repair attempt. Executable but semantically incorrect SQL does not trigger repair.
+Condition D differs from Condition C only by allowing one verification-triggered repair attempt. Executable but semantically wrong SQL does not trigger repair.
 
 ---
 
 ## Figures
 
-### Figure 1. Local NL-to-SQL execution pipeline
+### Local NL-to-SQL execution pipeline
 
-![Local NL-to-SQL execution pipeline](figures/fig1_pipeline.png)
+![Local NL-to-SQL execution pipeline](figures/fig_benchmark_pipeline.png)
 
-The benchmark builds a condition-specific schema context, constructs a fixed prompt, runs a compact language model locally, extracts SQL, verifies the SQL, executes it in SQLite, and logs correctness/resource metrics. Repair is enabled only in Condition D and only after verification failure.
+The pipeline runs from question and schema context to prompt construction, local small-language-model inference, candidate SQL extraction, lightweight verification, SQLite execution, and metric logging. The repair loop is used only in Condition D after verification failure.
 
-### Figure 3. Execution accuracy by model and condition
+### Prompt length distribution by condition
 
-![Execution accuracy by model and condition](figures/fig3_execution_accuracy_by_condition.png)
+![Prompt length distribution by schema-context condition](figures/fig_prompt_length_by_condition.png)
 
-This figure compares execution accuracy across all ten models and four experimental conditions.
+This figure shows how schema-context choice changes prompt length. Conditions C and D are longer because they add types, keys, foreign-key information, and sample values.
 
-### Figure 4. Accuracy movement for the top five Condition-D models
+### Execution accuracy by model and condition
 
-![Accuracy movement for top five models](figures/fig4_top5_accuracy_movement.png)
+![Execution accuracy by model and condition](figures/fig_execution_accuracy_by_condition.png)
 
-This figure highlights how the strongest Condition-D models move across the four schema-context and repair conditions.
+This grouped bar chart compares all ten models under Conditions A--D.
 
-### Figure 5. Accuracy-latency tradeoff under Condition D
+### Accuracy movement for the top five Condition-D models
 
-![Accuracy-latency tradeoff](figures/fig5_accuracy_latency_tradeoff.png)
+![Accuracy movement for the top five Condition-D models](figures/fig_top5_accuracy_by_condition.png)
 
-This figure compares execution accuracy against median generation latency. The connected line marks the nondominated Pareto frontier.
+This line chart focuses on the five models with the highest Condition-D execution accuracy.
 
-### Figure 6. Accuracy-memory tradeoff under Condition D
+### Accuracy-latency tradeoff
 
-![Accuracy-memory tradeoff](figures/fig6_accuracy_memory_tradeoff.png)
+![Accuracy-latency tradeoff](figures/fig_pareto_accuracy_latency.png)
 
-This figure compares execution accuracy against model-load GPU reserved memory delta. It shows that the most accurate model is not necessarily the strongest local-systems tradeoff.
+This scatter plot compares Condition-D execution accuracy with median generation latency. The connected line marks the nondominated Pareto frontier.
 
-### Figure 7. Accuracy gain from repair
+### Accuracy-memory tradeoff
 
-![Repair accuracy gain](figures/fig7_repair_gain.png)
+![Accuracy-memory tradeoff](figures/fig_pareto_accuracy_memory.png)
 
-This figure visualizes the execution-accuracy gain from Condition C to Condition D.
+This scatter plot compares Condition-D execution accuracy with model-load GPU reserved-memory delta. It shows why the most accurate model is not always the most resource-efficient local choice.
+
+### Repair accuracy gain
+
+![Repair accuracy gain from Condition C to Condition D](figures/fig_repair_accuracy_gain.png)
+
+This chart shows that one-step repair gives uneven gains. It helps most when errors are detectable by the lightweight verifier.
 
 ---
 
-## Main result tables
+## Main results from `results/all_models_main_metrics.csv`
 
-### Table 1. Experimental conditions
+### Condition-D summary
 
-| Condition | Schema context | Repair |
-|---|---|---|
-| A | Full schema | Disabled |
-| B | Conservative pruned schema | Disabled |
-| C | Conservative pruned + augmented schema | Disabled |
-| D | Conservative pruned + augmented schema | Enabled |
+| Model | Acc. D (%) | Exec. D (%) | Median latency (s) | Load memory (MB) | Repair attempt (%) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Gemma-4-E4B-it | 52.81 | 95.74 | 7.53 | 8620 | 7.46 |
+| Gemma-4-E2B-it | 47.43 | 96.12 | 7.23 | 6146 | 9.89 |
+| Qwen3-4B-Instruct-2507 | 47.38 | 98.16 | 4.85 | 2228 | 2.71 |
+| Llama-3.2-3B-Instruct | 35.17 | 87.40 | 3.00 | 1814 | 18.51 |
+| Qwen3-1.7B | 31.68 | 87.95 | 2.61 | 2754 | 14.67 |
+| Phi-4-mini-instruct | 30.16 | 92.53 | 4.08 | 2558 | 9.60 |
+| Granite-3.3-2B-Instruct | 29.53 | 85.00 | 5.16 | 1058 | 18.97 |
+| Llama-3.2-1B-Instruct | 16.18 | 59.01 | 1.91 | 664 | 47.87 |
+| Qwen3-0.6B | 13.46 | 73.38 | 1.52 | 1044 | 27.78 |
+| SmolLM3-3B | 12.40 | 35.08 | 22.31 | 1590 | 73.35 |
 
-### Table 2. Schema-context and prompt-size statistics
+### Accuracy across all four conditions
 
-| Cond. | Median schema chars | P95 schema chars | Median prompt chars | Mean comp. | Gold table recall | Fallback |
-|---|---:|---:|---:|---:|---:|---:|
-| A | 455 | 1864 | 725 | 1.00 | 100.0% | 0.0% |
-| B | 423 | 1282 | 690 | 0.89 | 97.9% | 22.1% |
-| C | 1018 | 3081 | 1310 | 2.19 | 97.9% | 22.1% |
-| D | 1018 | 3081 | 1310 | 2.19 | 97.9% | 22.1% |
-
-### Table 3. Main result summary sorted by Condition-D accuracy
-
-Accuracy and executable rates are percentages. Latency is in seconds. GPU load memory is model-load GPU reserved memory delta in MB.
+Accuracy and executable rates are percentages. Latency is in seconds. Memory is model-load GPU reserved-memory delta in MB.
 
 | Model | Acc. A | Acc. B | Acc. C | Acc. D | Exec. D | Lat. D | Mem. D |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Gemma-4-E4B-it | 52.52 | 51.45 | 50.78 | 52.81 | 95.55 | 7.53 | 8620 |
-| Gemma-4-E2B-it | 41.14 | 40.41 | 44.81 | 47.43 | 95.84 | 7.23 | 6146 |
-| Qwen3-4B-Instruct-2507 | 45.06 | 45.06 | 47.19 | 47.38 | 97.97 | 4.85 | 2228 |
-| Llama-3.2-3B-Instruct | 30.04 | 30.72 | 33.91 | 35.17 | 87.23 | 3.00 | 1814 |
-| Qwen3-1.7B | 31.55 | 31.36 | 31.29 | 31.68 | 87.52 | 2.61 | 2754 |
-| Phi-4-mini-instruct | 28.56 | 28.65 | 29.69 | 30.23 | 92.36 | 4.08 | 2558 |
-| Granite-3.3-2B-Instruct | 27.30 | 26.72 | 28.85 | 29.53 | 84.91 | 5.16 | 1058 |
-| Llama-3.2-1B-Instruct | 16.36 | 16.07 | 15.20 | 16.17 | 58.90 | 1.91 | 664 |
-| Qwen3-0.6B | 13.87 | 13.95 | 13.46 | 13.46 | 73.31 | 1.52 | 1044 |
-| SmolLM3-3B | 10.64 | 11.80 | 10.08 | 12.40 | 35.01 | 22.31 | 1590 |
-
-### Table 4. Repair effect from Condition C to Condition D
-
-Accuracy and executable rates are percentages.
-
-| Model | Acc. C | Acc. D | Gain | Exec. C | Exec. D | Gain | Repair % | Rep. lat. |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Gemma-4-E4B-it | 50.78 | 52.81 | 2.03 | 92.36 | 95.55 | 3.19 | 7.45 | 0.98 |
-| Gemma-4-E2B-it | 44.81 | 47.43 | 2.62 | 89.85 | 95.84 | 6.00 | 9.86 | 0.87 |
-| Qwen3-4B-Instruct-2507 | 47.19 | 47.38 | 0.19 | 97.10 | 97.97 | 0.87 | 2.71 | 0.20 |
-| Llama-3.2-3B-Instruct | 33.91 | 35.17 | 1.26 | 81.33 | 87.23 | 5.90 | 18.47 | 0.84 |
-| Qwen3-1.7B | 31.29 | 31.68 | 0.39 | 84.91 | 87.52 | 2.61 | 14.60 | 0.78 |
-| Phi-4-mini-instruct | 29.69 | 30.23 | 0.54 | 90.23 | 92.36 | 2.13 | 9.57 | 1.15 |
-| Granite-3.3-2B-Instruct | 28.85 | 29.53 | 0.68 | 80.95 | 84.91 | 3.97 | 18.96 | 1.78 |
-| Llama-3.2-1B-Instruct | 15.20 | 16.17 | 0.97 | 52.03 | 58.90 | 6.87 | 47.87 | 1.23 |
-| Qwen3-0.6B | 13.46 | 13.46 | 0.00 | 72.15 | 73.31 | 1.16 | 27.76 | 1.88 |
-| SmolLM3-3B | 10.08 | 12.40 | 2.33 | 26.60 | 35.01 | 8.41 | 73.21 | 15.62 |
-
-### Table 5. Analytical subset comparison under Condition D
-
-Accuracy and executable rates are percentages.
-
-| Model | Main acc. | Analytic acc. | Drop | Main exec. | Analytic exec. |
-|---|---:|---:|---:|---:|---:|
-| Gemma-4-E4B-it | 52.81 | 47.43 | 5.38 | 95.55 | 94.75 |
-| Gemma-4-E2B-it | 47.43 | 43.02 | 4.41 | 95.84 | 95.44 |
-| Qwen3-4B-Instruct-2507 | 47.38 | 40.57 | 6.81 | 97.97 | 97.61 |
-| Llama-3.2-3B-Instruct | 35.17 | 28.00 | 7.17 | 87.23 | 85.97 |
-| Qwen3-1.7B | 31.68 | 24.71 | 6.97 | 87.52 | 86.20 |
-| Phi-4-mini-instruct | 30.23 | 21.37 | 8.86 | 92.36 | 91.45 |
-| Granite-3.3-2B-Instruct | 29.53 | 23.29 | 6.24 | 84.91 | 83.58 |
-| Llama-3.2-1B-Instruct | 16.17 | 12.56 | 3.61 | 58.90 | 56.78 |
-| Qwen3-0.6B | 13.46 | 7.08 | 6.38 | 73.31 | 70.13 |
-| SmolLM3-3B | 12.40 | 6.74 | 5.66 | 35.01 | 32.50 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Gemma-4-E4B-it | 52.52 | 51.45 | 50.78 | 52.81 | 95.74 | 7.53 | 8620 |
+| Gemma-4-E2B-it | 41.14 | 40.41 | 44.81 | 47.43 | 96.12 | 7.23 | 6146 |
+| Qwen3-4B-Instruct-2507 | 45.06 | 45.06 | 47.19 | 47.38 | 98.16 | 4.85 | 2228 |
+| Llama-3.2-3B-Instruct | 30.04 | 30.72 | 33.91 | 35.17 | 87.40 | 3.00 | 1814 |
+| Qwen3-1.7B | 31.58 | 31.39 | 31.29 | 31.68 | 87.95 | 2.61 | 2754 |
+| Phi-4-mini-instruct | 28.49 | 28.59 | 29.69 | 30.16 | 92.53 | 4.08 | 2558 |
+| Granite-3.3-2B-Instruct | 27.30 | 26.72 | 28.85 | 29.53 | 85.00 | 5.16 | 1058 |
+| Llama-3.2-1B-Instruct | 16.36 | 16.07 | 15.21 | 16.18 | 59.01 | 1.91 | 664 |
+| Qwen3-0.6B | 13.87 | 13.95 | 13.46 | 13.46 | 73.38 | 1.52 | 1044 |
+| SmolLM3-3B | 10.64 | 11.80 | 10.08 | 12.40 | 35.08 | 22.31 | 1590 |
 
 ---
 
-## Generated result files
+## Resource-aware ranking from `results/resource_aware_rank.csv`
 
-The following generated result files are expected in `results/`.
+The resource-aware score combines normalized execution accuracy, executable-query rate, latency efficiency, and memory efficiency using the paper's accuracy-first weighting.
 
-| File | Description |
-|---|---|
-| `all_models_main_metrics.csv` | Main model-level metrics across all four conditions |
-| `all_models_error_breakdown.csv` | SQL verification and execution failure summaries |
-| `all_models_analytic_subset_metrics.csv` | Metrics on the analytical subset of structurally harder SQL examples |
-| `resource_aware_rank.csv` | Accuracy-first resource-aware ranking based on accuracy, executability, latency, and memory |
-| `rank_by_execution_accuracy.csv` | Ranking by execution accuracy |
-| `rank_by_executable_query_rate.csv` | Ranking by executable-query rate |
-| `rank_by_median_generation_latency.csv` | Ranking by median generation latency |
-| `rank_by_model_load_memory.csv` | Ranking by model-load GPU memory delta |
-| `model_file_status.csv` | Completion/status tracking for model output files |
+| Rank | Model | Score | Acc. D (%) | Exec. D (%) | Latency (s) | Memory (MB) |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: |
+| 1 | Qwen3-4B-Instruct-2507 | 0.881 | 47.38 | 98.16 | 4.85 | 2228 |
+| 2 | Gemma-4-E4B-it | 0.835 | 52.81 | 95.74 | 7.53 | 8620 |
+| 3 | Gemma-4-E2B-it | 0.803 | 47.43 | 96.12 | 7.23 | 6146 |
+| 4 | Llama-3.2-3B-Instruct | 0.719 | 35.17 | 87.40 | 3.00 | 1814 |
+| 5 | Qwen3-1.7B | 0.669 | 31.68 | 87.95 | 2.61 | 2754 |
+| 6 | Phi-4-mini-instruct | 0.654 | 30.16 | 92.53 | 4.08 | 2558 |
+| 7 | Granite-3.3-2B-Instruct | 0.630 | 29.53 | 85.00 | 5.16 | 1058 |
+| 8 | Qwen3-0.6B | 0.430 | 13.46 | 73.38 | 1.52 | 1044 |
+| 9 | Llama-3.2-1B-Instruct | 0.419 | 16.18 | 59.01 | 1.91 | 664 |
+| 10 | SmolLM3-3B | 0.088 | 12.40 | 35.08 | 22.31 | 1590 |
 
-Large generated output files, if included, should contain only benchmark-generated outputs. Do not include raw Spider data, full Spider question text, gold SQL, or original SQLite database contents unless redistribution rights are explicitly confirmed.
+---
+
+## Repair results from Condition C to Condition D
+
+| Model | Acc. C | Acc. D | Acc. gain | Exec. C | Exec. D | Exec. gain | Repair % | Repair lat. |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Gemma-4-E4B-it | 50.78 | 52.81 | 2.03 | 92.54 | 95.74 | 3.20 | 7.46 | 0.99 |
+| Gemma-4-E2B-it | 44.81 | 47.43 | 2.62 | 90.11 | 96.12 | 6.01 | 9.89 | 0.87 |
+| Qwen3-4B-Instruct-2507 | 47.19 | 47.38 | 0.19 | 97.29 | 98.16 | 0.87 | 2.71 | 0.20 |
+| Llama-3.2-3B-Instruct | 33.91 | 35.17 | 1.26 | 81.49 | 87.40 | 5.91 | 18.51 | 0.85 |
+| Qwen3-1.7B | 31.29 | 31.68 | 0.39 | 85.33 | 87.95 | 2.62 | 14.67 | 0.79 |
+| Phi-4-mini-instruct | 29.69 | 30.16 | 0.47 | 90.23 | 92.53 | 2.30 | 9.60 | 1.15 |
+| Granite-3.3-2B-Instruct | 28.85 | 29.53 | 0.68 | 81.03 | 85.00 | 3.97 | 18.97 | 1.78 |
+| Llama-3.2-1B-Instruct | 15.21 | 16.18 | 0.97 | 52.13 | 59.01 | 6.88 | 47.87 | 1.23 |
+| Qwen3-0.6B | 13.46 | 13.46 | 0.00 | 72.22 | 73.38 | 1.16 | 27.78 | 1.88 |
+| SmolLM3-3B | 10.08 | 12.40 | 2.33 | 26.65 | 35.08 | 8.43 | 73.35 | 15.65 |
+
+---
+
+## Analytical-subset results from `results/all_models_analytic_subset_metrics.csv`
+
+The analytical subset contains Spider development examples whose gold SQL includes structural features such as joins, multiple tables, aggregation, grouping, ordering, limits, or nested queries.
+
+| Model | Main acc. | Analytic acc. | Drop | Main exec. | Analytic exec. |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Gemma-4-E4B-it | 52.81 | 47.43 | 5.38 | 95.74 | 94.97 |
+| Gemma-4-E2B-it | 47.43 | 43.02 | 4.41 | 96.12 | 95.77 |
+| Qwen3-4B-Instruct-2507 | 47.38 | 40.57 | 6.81 | 98.16 | 97.83 |
+| Llama-3.2-3B-Instruct | 35.17 | 28.00 | 7.17 | 87.40 | 86.17 |
+| Qwen3-1.7B | 31.68 | 24.71 | 6.97 | 87.95 | 86.50 |
+| Phi-4-mini-instruct | 30.16 | 21.28 | 8.88 | 92.53 | 91.65 |
+| Granite-3.3-2B-Instruct | 29.53 | 23.29 | 6.24 | 85.00 | 83.68 |
+| Llama-3.2-1B-Instruct | 16.18 | 12.57 | 3.61 | 59.01 | 56.91 |
+| Qwen3-0.6B | 13.46 | 7.08 | 6.38 | 73.38 | 70.21 |
+| SmolLM3-3B | 12.40 | 6.74 | 5.66 | 35.08 | 32.57 |
+
+---
+
+## Result-file schemas
+
+**`results/all_models_main_metrics.csv`**
+
+```text
+model_name, condition, n_examples, execution_accuracy, executable_query_rate, exact_match_accuracy, median_generation_latency_sec, mean_generation_latency_sec, p95_generation_latency_sec, mean_prompt_input_chars, mean_schema_context_chars, mean_schema_compression_ratio, gold_table_recall, gold_column_recall, pruning_failure_rate, mean_model_load_gpu_reserved_delta_mb, mean_runtime_gpu_peak_delta_mb, mean_runtime_cpu_delta_mb, repair_attempt_rate, mean_repair_latency_sec
+```
+
+**`results/all_models_analytic_subset_metrics.csv`**
+
+```text
+model_name, condition, n_examples, execution_accuracy, executable_query_rate, exact_match_accuracy, median_generation_latency_sec, mean_generation_latency_sec, p95_generation_latency_sec, mean_prompt_input_chars, mean_schema_context_chars, mean_schema_compression_ratio, gold_table_recall, gold_column_recall, pruning_failure_rate, mean_model_load_gpu_reserved_delta_mb, mean_runtime_gpu_peak_delta_mb, mean_runtime_cpu_delta_mb, repair_attempt_rate, mean_repair_latency_sec
+```
+
+**`results/all_models_error_breakdown.csv`**
+
+```text
+model_name, condition, verification_status, count, total, rate
+```
+
+**`results/resource_aware_rank.csv`**
+
+```text
+model_name, condition, n_examples, execution_accuracy, executable_query_rate, exact_match_accuracy, median_generation_latency_sec, mean_generation_latency_sec, p95_generation_latency_sec, mean_prompt_input_chars, mean_schema_context_chars, mean_schema_compression_ratio, gold_table_recall, gold_column_recall, pruning_failure_rate, mean_model_load_gpu_reserved_delta_mb, mean_runtime_gpu_peak_delta_mb, mean_runtime_cpu_delta_mb, repair_attempt_rate, mean_repair_latency_sec, accuracy_score, exec_rate_score, latency_score, memory_score, resource_aware_score, resource_aware_rank
+```
+
+**`results/model_file_status.csv`**
+
+```text
+model_name, model_id, file_exists, rows, completed_pairs, expected_pairs, complete
+```
+
+**`results/all_model_outputs.csv`**
+
+```text
+example_id, db_id, question, gold_sql, model_name, model_id, condition, context_mode, verification_enabled, repair_enabled, schema_context, schema_context_chars, full_schema_chars, schema_compression_ratio, selected_tables, gold_table_recall, gold_column_recall, pruning_failure, prompt_input_chars, prompt_input_tokens, raw_output, generated_sql, final_sql, extraction_status, verification_status, verification_error_message, verification_latency_sec, generation_latency_sec, repair_attempted, repair_sql, repair_raw_output, repair_extraction_status, repair_latency_sec, gold_exec_ok, pred_exec_ok, execution_correct, gold_exec_error, pred_exec_error, model_load_time_sec, model_load_cpu_delta_mb, model_load_gpu_allocated_delta_mb, model_load_gpu_reserved_delta_mb, runtime_cpu_delta_mb, runtime_gpu_allocated_delta_mb, runtime_gpu_reserved_delta_mb, runtime_gpu_peak_delta_mb, total_system_cpu_rss_mb, fatal_error
+```
+
+**`results/spider_dev_analytic_subset.csv`**
+
+```text
+example_id, db_id, question, gold_sql
+```
 
 ---
 
 ## Reproducing the benchmark
 
-A typical reproduction workflow is:
-
 1. Clone this repository.
-2. Install the Python dependencies listed in `requirements.txt`.
-3. Download Spider 1.0 from the official source.
-4. Place Spider files under `data/spider/` using the layout shown above.
-5. Open the benchmark notebook in Google Colab or a local Jupyter environment.
-6. Run the notebook cells to generate model outputs, metrics, tables, and figures.
+2. Download Spider 1.0 separately and place it under `data/spider/`.
+3. Open `notebooks/APWEB_WAIM_2026_Text_to_SQL_SLMs.ipynb` in Google Colab or Jupyter.
+4. Configure the project paths in the notebook.
+5. Set any required model-access tokens through environment variables or Colab Secrets, not hard-coded strings.
+6. Run the benchmark cells to regenerate outputs.
+7. Run the material-generation notebook if paper figures/tables need to be regenerated.
 
-Example setup:
-
-```bash
-git clone https://github.com/YOUR_USERNAME/local-text-to-sql-sqlite-slm-benchmark.git
-cd local-text-to-sql-sqlite-slm-benchmark
-pip install -r requirements.txt
-```
-
-Then place Spider locally:
+Example local layout:
 
 ```text
 data/spider/dev.json
@@ -284,37 +362,43 @@ data/spider/database/
 
 ---
 
-## Security and credential note
+## Security notes
 
-Before committing the notebook, make sure it does not contain:
+Before committing notebooks publicly, check that they do not contain:
 
-- Hugging Face tokens
-- API keys
-- Kaggle credentials
-- Google Drive paths containing private information
-- private Colab secrets
+- Hugging Face tokens;
+- API keys;
+- Kaggle credentials;
+- private Google Drive paths;
+- temporary local paths that reveal private information.
 
-Use environment variables or Colab Secrets instead of hard-coded credentials.
+Use environment variables or Colab Secrets instead of hard-coded credentials. The uploaded main notebook references `HF_TOKEN`, but no literal `hf_...` token string was detected in the inspected notebook.
 
 ---
 
 ## Data and code availability statement
 
-The generated benchmark outputs, including aggregate model-level metrics, repair statistics, analytical-subset results, resource-aware score tables, and figure source data, are available in this repository and/or the linked Kaggle artifact. The raw Spider 1.0 dataset and its original SQLite database files are not redistributed in this artifact; users should obtain them from the official Spider release. The accompanying benchmark notebook provides the code for prompt construction, schema-context generation, SQL verification, SQLite execution, metric computation, and figure/table generation. Model weights are not redistributed; the artifact documents the model identifiers and software versions used in the experiments.
+The benchmark notebooks, generated aggregate metric files, generated figure files, and paper-support artifacts are available in this repository. The experiments use the publicly available Spider 1.0 dataset and its original SQLite database files, which are not redistributed as database files in this repository. Users should obtain Spider 1.0 from its official release and place the files according to the layout above. Model weights are not redistributed; the repository documents the exact model identifiers used in the experiments.
+
+For a strict generated-data-only public release, the recommended files to keep public are the aggregate result files, ranking files, figures, and notebooks. Redact or remove per-example files that include Spider question text or gold SQL unless redistribution rights are confirmed.
 
 ---
 
 ## License
 
-The code in this repository is released under the license specified in `LICENSE`.
+The code license should be specified in `LICENSE` if a license file is added later.
 
-Generated benchmark result tables and figures may be released under a separate data license, such as CC BY 4.0, if desired.
+A common setup is:
+
+- code/notebooks: MIT License or Apache-2.0;
+- generated aggregate result tables and figures: CC BY 4.0;
+- third-party datasets and model weights: governed by their original licenses/terms.
 
 ---
 
 ## Citation
 
-If you use this benchmark code or generated results, please cite the paper:
+If you use this benchmark code or generated results, please cite:
 
 ```bibtex
 @inproceedings{ha2026localtexttosql,
@@ -325,4 +409,3 @@ If you use this benchmark code or generated results, please cite the paper:
   note      = {To appear}
 }
 ```
-
